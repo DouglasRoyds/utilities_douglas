@@ -1,0 +1,41 @@
+#!/bin/bash
+
+set -o pipefail
+
+if pomodoro=$(ps h -C pomodoro -o start_time,cmd); then
+   (
+      echo ${pomodoro}
+      date +%H:%M
+   ) | gawk -vFPAT='[0-9]+' '
+                     (starthour == "") {
+                        starthour = $1
+                        startmin = $2
+                        if (NF > 2) {
+                           pomodoro_length = $NF
+                        } else {
+                           pomodoro_length = 25
+                        }
+                        #print "     Start time: " $1 ":" $2
+                        #print "Pomodoro length: " pomodoro_length
+                        next
+                     }
+
+                     (now_hour == "") {
+                        now_hour = $1
+                        now_min = $2
+                        #print "   Current time: " $0
+                        next
+                     }
+
+                     END {
+                        if (now_min < startmin) {
+                           now_min += 60
+                        }
+                        remaining = pomodoro_length - (now_min - startmin)
+                        print remaining " min"
+                     }
+                  '
+else
+   echo No pomodoro
+fi
+

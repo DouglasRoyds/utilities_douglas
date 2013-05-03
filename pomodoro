@@ -1,0 +1,34 @@
+#!/bin/bash
+# Kicks off a 25-minute pomodoro, displaying a notification tomato when done.
+# Can be run a second time to re-start the timer.
+
+set -e
+
+PACKAGE=utilities-douglas
+bindir=$(cd $(dirname ${0}) >/dev/null; pwd)
+echo "bindir = ${bindir}"
+prefix=$(dirname $bindir)
+echo "prefix = ${prefix}"
+pixmaps=$prefix/share/pixmaps/$PACKAGE
+echo "pixmaps = ${pixmaps}"
+
+pomodoro_time=$1
+pomodoro_time=${pomodoro_time:=25}
+echo "pomodoro_time = ${pomodoro_time}"
+
+# Is there already a pomodoro running? If so, kill it.
+new_pomodoro=$$
+for pid in $(ps -C pomodoro --no-headers --format pid | grep -v $new_pomodoro); do
+   # Kill the sleep first (if any), as there would be no parent if we did it the other way round
+   kill $(ps --ppid $pid --no-headers --format pid) 2>/dev/null
+   kill $pid 2>/dev/null   # For no reason I was able to explain, I was always getting a rogue pid.
+                           # Just silencing the complaint here.
+done || true
+
+notify-send --icon $pixmaps/pomodoro.png Started
+(
+   # Only do the notification on success so that the pomodoro or sleep process can be kill'd
+   sleep ${pomodoro_time}m &&
+      zenity --error --title=Pomodoro --text=Time
+) &
+

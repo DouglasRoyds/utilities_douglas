@@ -4,17 +4,12 @@
 
 set -e
 
+pomodoro_time=${1:-25}
+
 PACKAGE=utilities-douglas
 bindir=$(cd $(dirname ${0}) >/dev/null; pwd)
-echo "bindir = ${bindir}"
 prefix=$(dirname $bindir)
-echo "prefix = ${prefix}"
 pixmaps=$prefix/share/pixmaps/$PACKAGE
-echo "pixmaps = ${pixmaps}"
-
-pomodoro_time=$1
-pomodoro_time=${pomodoro_time:=25}
-echo "pomodoro_time = ${pomodoro_time}"
 
 # Is there already a pomodoro running? If so, kill it.
 new_pomodoro=$$

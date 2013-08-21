@@ -20,7 +20,7 @@ for pid in $(ps -C pomodoro --no-headers --format pid | grep -v $new_pomodoro); 
                            # Just silencing the complaint here.
 done || true
 
-notify-send --icon $pixmaps/pomodoro.png Started
+notify-send --icon $pixmaps/pomodoro.png Started $pomodoro_time
 (
    # Only do the notification on success so that the pomodoro or sleep process can be kill'd
    sleep ${pomodoro_time}m &&

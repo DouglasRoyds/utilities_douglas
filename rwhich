@@ -4,9 +4,11 @@ candidate=$(which $1)
 while [ -L "$candidate" ]; do
    ls -lh --color $candidate
    path=$(dirname $candidate)
-   candidate=$(stat -c %N $candidate | gawk -F\[\`\'\] '{print $4}')
+   candidate=$(stat -c %N $candidate | gawk -F\[\`\'\‘\’\] '{print $4}')
    if [ "$(basename $candidate)" == "$candidate" ]
       then candidate="$path/$candidate"
    fi
 done
 ls -lh --color $candidate
+file $candidate
+

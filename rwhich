@@ -4,7 +4,7 @@ candidate=$(which $1)
 while [ -L "$candidate" ]; do
    ls -lh --color $candidate
    path=$(dirname $candidate)
-   candidate=$(stat -c %N $candidate | gawk -F\[\`\'\‘\’\] '{print $4}')
+   candidate=$(readlink $candidate)
    if [ "$(basename $candidate)" == "$candidate" ]
       then candidate="$path/$candidate"
    fi

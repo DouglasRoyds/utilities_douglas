@@ -98,17 +98,22 @@ class WalkingSkeleton:
         table = htmldoc.table
 
         epics_already_added = []
+        epics_in_this_swimlane = []
         previous_column = 0
         for story in self.stories[0:(limit if limit else -1)]:
             self.log.debug('Story: {}'.format(story.summary))
             new_epic = story.epic
             new_activity = new_epic.activity
-            if new_epic in epics_already_added:
-                column = epics_already_added.index(new_epic)
-                if column < previous_column:
-                    table.add_swimlane('stories')
+
+            if new_epic in epics_in_this_swimlane:
+                if new_epic != epics_in_this_swimlane[-1]:
                     self.log.debug('   New swimlane')
+                    table.add_swimlane('stories')
+                    epics_in_this_swimlane = []
             else:
+                epics_in_this_swimlane.append(new_epic)
+
+            if new_epic not in epics_already_added:
                 column = len(epics_already_added)
                 for (i, epic) in list(enumerate(epics_already_added)):
                     if epic.activity == new_activity:
@@ -117,6 +122,7 @@ class WalkingSkeleton:
                 table.add_column([new_activity.name, new_epic.label], column)
                 epics_already_added[column:column] = [new_epic]
                 self.log.debug('   Epic {}: {}'.format(column, new_epic.label))
+            column = epics_already_added.index(new_epic)
             table.append_to_column(column, story.summary)
             previous_column = column
 

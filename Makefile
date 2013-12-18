@@ -10,7 +10,7 @@ docdir = $(datarootdir)/doc/$(PACKAGE)
 pixmaps = $(datarootdir)/pixmaps/$(PACKAGE)
 DESTDIR = /
 
-executables = generate_password hashcdrom Man pomodoro pomodoro_remaining_time rwhich
+executables = generate_password hashcdrom Man pomodoro pomodoro_remaining_time rwhich walking_skeleton.py
 imagefiles = pomodoro.png
 docfiles = $(wildcard *.md)
 

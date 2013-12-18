@@ -135,21 +135,34 @@ class HtmlSkeletonDoc:
 
         self.header = """<html>
 <head>
-<style>
-   td.activity {
-      text-align:left;
-      font-size:1.2em;
-      padding:10px 4px;
-   }
-   td.epic {
-      padding:4px;
-      background-color:#FFD700;
-   }
-   td.stories {
-      padding:4px;
-      background-color:#87CEFA;
-   }
-</style>
+    <style type="text/css">
+        <!--
+        td.activity {
+            text-align:left;
+            font-size:1.2em;
+            padding:10px 4px;
+        }
+        td.epic {
+            padding:4px;
+            background-color:#FFD700;
+        }
+        td.stories {
+            padding:4px;
+            background-color:#87CEFA;
+        }
+        a#link {
+            display: block;
+            width: 100%;
+            height: 100%;
+            color: #000;
+            text-decoration: none;
+        }
+        a#link:hover {
+            background-color: #666;
+            color: #FFF;
+        }
+        //-->
+    </style>
 </head>
 """
 

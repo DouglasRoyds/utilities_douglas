@@ -101,27 +101,25 @@ class WalkingSkeleton:
         epics_in_this_swimlane = []
         previous_column = 0
         for story in self.stories[0:(limit if limit else -1)]:
-            self.log.debug('Story: {}'.format(story.summary))
             new_epic = story.epic
             new_activity = new_epic.activity
 
             if new_epic in epics_in_this_swimlane:
                 if new_epic != epics_in_this_swimlane[-1]:
-                    self.log.debug('   New swimlane')
                     table.add_swimlane('stories')
                     epics_in_this_swimlane = []
             else:
                 epics_in_this_swimlane.append(new_epic)
+                self.log.debug('   Epic: {}'.format(new_epic.label))
 
             if new_epic not in epics_already_added:
                 column = len(epics_already_added)
                 for (i, epic) in list(enumerate(epics_already_added)):
                     if epic.activity == new_activity:
                         column = i+1   # Add after this column
-                        self.log.debug('   Seen this activity already: {}'.format(epic.activity.name))
                 table.add_column([new_activity.name, new_epic.label], column)
                 epics_already_added[column:column] = [new_epic]
-                self.log.debug('   Epic {}: {}'.format(column, new_epic.label))
+            self.log.debug('      Story: {}'.format(story.summary))
             column = epics_already_added.index(new_epic)
             table.append_to_column(column, story.summary)
             previous_column = column
@@ -192,7 +190,7 @@ class HtmlTable:
         return len(self.rows)-1
 
     def add_swimlane(self, htmlclass):
-        self.log.debug('Swimlane')
+        self.log.debug('\nNew swimlane')
         for row in self.rows:
             row.close()
         self.rows.append(HtmlTableSwimlane(htmlclass, self.log, self.width()))
@@ -432,7 +430,7 @@ if __name__ == "__main__":
 
     skel = WalkingSkeleton(xmlfile, outputfile, log)
     if options.verbosity == logging.DEBUG:
-        sys.stderr.write('\n' + str(skel) + '\n\n')
+        sys.stderr.write('\n' + str(skel) + '\n')
 
     print skel.htmldoc(limit=options.limit)
 

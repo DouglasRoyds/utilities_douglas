@@ -15,16 +15,14 @@ import sys
 import xml.etree.ElementTree
 
 class WalkingSkeleton:
-    def __init__(self, xmlfile, outputfile, log):
+    def __init__(self, xmlfile, log):
 
         self.stories = []       # In "rank" order, ie. the order they came in the XML file
         self.activities = []    # Not sure that I'll need this
         self.stories_without_epics = []         # Only used during construction: how can I get rid of this?
         self.stories_without_epics_yet = []     # Only used during construction: how can I get rid of this?
-        self.outputfile = outputfile
         self.log = log
         self.log.debug("XML file: %s", xmlfile)
-        self.log.debug("Output file: %s", self.outputfile)
 
         tree = xml.etree.ElementTree.parse(xmlfile)
         rss = tree.getroot()
@@ -425,10 +423,11 @@ if __name__ == "__main__":
     xmlfile = args[0]
     if len(args) == 2:
         outputfile = args[1]
+        sys.stdout = open(outputfile, 'w')
     else:
         outputfile = None
 
-    skel = WalkingSkeleton(xmlfile, outputfile, log)
+    skel = WalkingSkeleton(xmlfile, log)
     if options.verbosity == logging.DEBUG:
         sys.stderr.write('\n' + str(skel) + '\n')
 

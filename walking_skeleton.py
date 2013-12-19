@@ -226,15 +226,15 @@ class HtmlTableRow:
 
     def __str__(self):
         consolidated_cells = []
-        for (i, cell) in list(enumerate(self.cells)):
-            if len(consolidated_cells) > 0:
+        for thiscell in self.cells:
+            if consolidated_cells:
                 (prevcell, span) = consolidated_cells[-1:][0]
-                if prevcell.text == cell.text:
+                if prevcell.text == thiscell.text:
                     consolidated_cells[-1:] = [(prevcell, span+1)]
                 else:
-                    consolidated_cells += [(cell, 1)]
+                    consolidated_cells += [(thiscell, 1)]
             else:
-                consolidated_cells += [(cell, 1)]
+                consolidated_cells += [(thiscell, 1)]
         string = '<tr>\n   ' + '\n   '.join([cell.string(span) for (cell, span) in consolidated_cells]) + '\n</tr>'
         return string
 

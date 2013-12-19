@@ -225,7 +225,18 @@ class HtmlTableRow:
         self.cells = [HtmlTableCell(self, None, self.log)] * columns
 
     def __str__(self):
-        return '<tr>\n   ' + '\n   '.join([str(cell) for cell in self.cells]) + '\n</tr>'
+        consolidated_cells = []
+        for (i, cell) in list(enumerate(self.cells)):
+            if len(consolidated_cells) > 0:
+                (prevcell, span) = consolidated_cells[-1:][0]
+                if prevcell.text == cell.text:
+                    consolidated_cells[-1:] = [(prevcell, span+1)]
+                else:
+                    consolidated_cells += [(cell, 1)]
+            else:
+                consolidated_cells += [(cell, 1)]
+        string = '<tr>\n   ' + '\n   '.join([cell.string(span) for (cell, span) in consolidated_cells]) + '\n</tr>'
+        return string
 
     def width(self):
         return len(self.cells)
@@ -290,7 +301,15 @@ class HtmlTableCell:
         self.text = text
 
     def __str__(self):
-        return '<td'+(' class="'+self.row.htmlclass+'"' if self.text else '')+'>' + (self.text if self.text else '') + '</td>'
+        return self.string(1)
+
+    def string(self, colspan):
+        return '<td' \
+                +(' class="'+self.row.htmlclass+'"' if self.text else '') \
+                +(' colspan="{}"'.format(colspan) if colspan>1 else '') \
+                +'>' \
+                + (self.text if self.text else '') \
+                + '</td>'
 
 # ------------------------------------- Activities, Epics, Stories ----------------------------------------------------
 

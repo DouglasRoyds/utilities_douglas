@@ -115,7 +115,7 @@ class WalkingSkeleton:
                 for (i, epic) in list(enumerate(epics_already_added)):
                     if epic.activity == new_activity:
                         column = i+1   # Add after this column
-                table.add_column([new_activity.text, new_epic.text], column)
+                table.add_column([new_activity, new_epic], column)
                 epics_already_added[column:column] = [new_epic]
             self.log.debug('      Story: {}'.format(story.text))
             column = epics_already_added.index(new_epic)
@@ -218,7 +218,8 @@ class HtmlTable:
     def add_column(self, contents, column=False):
         rownum = 0
         for row in self.rows:
-            row.add_column(column, contents[rownum] if rownum<len(contents) else None)
+            content = contents[rownum] if rownum<len(contents) else None
+            row.add_column(column, item=content)
             rownum += 1
 
     def append_to_column(self, column, text):
@@ -246,7 +247,7 @@ class HtmlTableRow:
         for thiscell in self.cells:
             if consolidated_cells:
                 (prevcell, span) = consolidated_cells[-1:][0]
-                if prevcell.text == thiscell.text:
+                if prevcell.get_text() == thiscell.get_text():
                     consolidated_cells[-1:] = [(prevcell, span+1)]
                 else:
                     consolidated_cells += [(thiscell, 1)]
@@ -264,7 +265,7 @@ class HtmlTableRow:
         self.cells[column:column] = [HtmlTableCell(self, self.log, text=text, item=item)]
 
     def get_cell(self, column):
-        return self.cells[column].text
+        return self.cells[column].text or self.cells[column].item
 
     def set_cell(self, column, text):
         if not self.cells[column].text:
@@ -330,6 +331,14 @@ class HtmlTableCell:
                 + (self.text if self.text else '') \
                 + (self.item.text if self.item else '') \
                 + '</td>'
+
+    def get_text(self):
+        if self.text:
+            return self.text
+        elif self.item:
+            return self.item.text
+        else:
+            return None
 
 # ------------------------------------- Activities, Epics, Stories ----------------------------------------------------
 

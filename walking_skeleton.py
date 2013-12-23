@@ -17,6 +17,7 @@ import xml.etree.ElementTree
 class WalkingSkeleton:
     def __init__(self, xmlfile, log):
 
+        self.title = None
         self.stories = []       # In "rank" order, ie. the order they came in the XML file
         self.activities = []    # Not sure that I'll need this
         self.stories_without_epics = []         # Only used during construction: how can I get rid of this?
@@ -27,6 +28,7 @@ class WalkingSkeleton:
         tree = xml.etree.ElementTree.parse(xmlfile)
         rss = tree.getroot()
         channel = rss[0]
+        self.title = channel.findall('title')[0].text
         for item in channel.findall('item'):
             if item.findall('type')[0].text == 'Epic':
                 epic = Epic(self.log).from_xml_item(item)
@@ -92,7 +94,7 @@ class WalkingSkeleton:
             self.stories_without_epics.append(story)
 
     def htmldoc(self, limit=None):
-        htmldoc = HtmlSkeletonDoc(self.log)
+        htmldoc = HtmlSkeletonDoc(self.title, self.log)
         table = htmldoc.table
 
         epics_already_added = []
@@ -128,7 +130,8 @@ class WalkingSkeleton:
 # ------------------------------------- HTML --------------------------------------------------------------------------
 
 class HtmlSkeletonDoc:
-    def __init__(self, log):
+    def __init__(self, title, log):
+        self.title = title
         self.log = log
         self.table = HtmlTable(self.log)
         self.table.add_row('Activity', closed=True)
@@ -137,6 +140,7 @@ class HtmlSkeletonDoc:
 
         self.header = """<html>
 <head>
+    <title>"""+self.title+"""</title>
     <style type="text/css">
         <!--
         td.Activity {
@@ -181,7 +185,7 @@ class HtmlSkeletonDoc:
 """
 
     def __str__(self):
-        return self.header + '\n<body>\n' + str(self.table) + '\n</body>\n'
+        return self.header + '\n<body>\n<h1>' + self.title + '</h1>' + str(self.table) + '\n</body>\n'
 
 class HtmlTable:
     """ Not a general-purpose HTML table.

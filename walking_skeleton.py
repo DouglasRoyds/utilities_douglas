@@ -160,6 +160,10 @@ class HtmlSkeletonDoc:
             padding:4px;
             background-color:#87CEFA;
         }
+        td.Maintenance {
+            padding:4px;
+            background-color:#87CEFA;
+        }
         td.stories {
             padding:4px;
             background-color:#87CEFA;
@@ -234,7 +238,7 @@ class HtmlTableRow:
         self.htmlclass = htmlclass
         self.log = log
         self.closed = closed
-        self.cells = [HtmlTableCell(self, None, self.log)] * columns
+        self.cells = [HtmlTableCell(self, self.log)] * columns
 
     def __str__(self):
         consolidated_cells = []
@@ -256,14 +260,14 @@ class HtmlTableRow:
     def add_column(self, column, text=None):
         if not column:
             column = self.width()
-        self.cells[column:column] = [HtmlTableCell(self, text, self.log)]
+        self.cells[column:column] = [HtmlTableCell(self, self.log, text=text)]
 
     def get_cell(self, column):
         return self.cells[column].text
 
     def set_cell(self, column, text):
         if not self.cells[column].text:
-            self.cells[column] = HtmlTableCell(self, text, self.log)
+            self.cells[column] = HtmlTableCell(self, self.log, text=text)
         else:
             raise Exception('Cell text already set')
 
@@ -308,9 +312,10 @@ class HtmlTableSwimlane(HtmlTableRow):
         self.rows.append(newrow)
 
 class HtmlTableCell:
-    def __init__(self, row, text, log):
+    def __init__(self, row, log, item=None, text=None):
         self.row = row
         self.text = text
+        self.item = item
 
     def __str__(self):
         return self.string(1)
@@ -318,9 +323,11 @@ class HtmlTableCell:
     def string(self, colspan):
         return '<td' \
                 +(' class="'+self.row.htmlclass+'"' if self.text else '') \
+                +(' class="'+self.item.type+'"' if self.item else '') \
                 +(' colspan="{}"'.format(colspan) if colspan>1 else '') \
                 +'>' \
                 + (self.text if self.text else '') \
+                + (self.item.text if self.item else '') \
                 + '</td>'
 
 # ------------------------------------- Activities, Epics, Stories ----------------------------------------------------

@@ -119,7 +119,7 @@ class WalkingSkeleton:
                 epics_already_added[column:column] = [new_epic]
             self.log.debug('      Story: {}'.format(story.text))
             column = epics_already_added.index(new_epic)
-            table.append_to_column(column, story.text)
+            table.append_to_column(column, story)
             previous_column = column
 
         self.log.debug('\n')
@@ -222,7 +222,7 @@ class HtmlTable:
             row.add_column(column, item=content)
             rownum += 1
 
-    def append_to_column(self, column, text):
+    def append_to_column(self, column, story):
         for row in self.rows:
             if row.closed:
                 continue
@@ -230,7 +230,7 @@ class HtmlTable:
                 # Major assumptions here:
                 # 1. This is a swim-lane.
                 # 2. It is the last one.
-                row.append_to_column(column, text)
+                row.append_to_column(column, story)
                 return
         raise Exception('Fell off the end of the swimlanes')
 
@@ -267,11 +267,11 @@ class HtmlTableRow:
     def get_cell(self, column):
         return self.cells[column].text or self.cells[column].item
 
-    def set_cell(self, column, text):
-        if not self.cells[column].text:
-            self.cells[column] = HtmlTableCell(self, self.log, text=text)
+    def set_cell(self, column, story):
+        if not self.get_cell(column):
+            self.cells[column] = HtmlTableCell(self, self.log, item=story)
         else:
-            raise Exception('Cell text already set')
+            raise Exception('Cell already set')
 
     def close(self):
         self.closed = True
@@ -299,18 +299,18 @@ class HtmlTableSwimlane(HtmlTableRow):
         for row in self.rows:
             row.add_column(column, text=text, item=item)
 
-    def set_cell(self, column, text):
+    def set_cell(self, column, story):
         raise Exception("Can't set cells directly in swim-lanes")
 
-    def append_to_column(self, column, text):
+    def append_to_column(self, column, story):
         for row in self.rows:
             if row.get_cell(column):
                 continue
             else:
-                row.set_cell(column, text)
+                row.set_cell(column, story)
                 return
         newrow = HtmlTableRow(self.htmlclass, self.log, columns=self.width())
-        newrow.set_cell(column, text)
+        newrow.set_cell(column, story)
         self.rows.append(newrow)
 
 class HtmlTableCell:

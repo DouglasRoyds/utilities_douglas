@@ -131,22 +131,34 @@ class HtmlSkeletonDoc:
     def __init__(self, log):
         self.log = log
         self.table = HtmlTable(self.log)
-        self.table.add_row('activity', closed=True)
-        self.table.add_row('epic', closed=True)
+        self.table.add_row('Activity', closed=True)
+        self.table.add_row('Epic', closed=True)
         self.table.add_swimlane('stories')
 
         self.header = """<html>
 <head>
     <style type="text/css">
         <!--
-        td.activity {
+        td.Activity {
             text-align:left;
             font-size:1.2em;
             padding:10px 4px;
         }
-        td.epic {
+        td.Epic {
             padding:4px;
             background-color:#FFD700;
+        }
+        td.Story {
+            padding:4px;
+            background-color:#87CEFA;
+        }
+        td.Capability {
+            padding:4px;
+            background-color:#87CEFA;
+        }
+        td.TechnicalDebt {
+            padding:4px;
+            background-color:#87CEFA;
         }
         td.stories {
             padding:4px;
@@ -313,25 +325,11 @@ class HtmlTableCell:
 
 # ------------------------------------- Activities, Epics, Stories ----------------------------------------------------
 
-class Activity:
-    def __init__(self, text, log):
-        self.text = text
-        self.log = log
-        self.epics = []
-
-    def __str__(self):
-        string = self.text+':'
-        for epic in self.epics:
-            string += '\n'+epic.str_indent(4)
-        return string
-
-    def add_epic(self, epic):
-        self.epics.append(epic)
-
 class Item:
     def __init__(self, log):
         self.log = log
         self.key = None
+        self.type = None
         self.url = None
         self.text = None
 
@@ -368,13 +366,12 @@ class Activity(Item):
 class Epic(Item):
     def __init__(self, log):
         Item.__init__(self, log)
-        self.text = ''
+        self.type = 'Epic'
         self.activity = None
         self.stories = []
 
     def from_xml_item(self, item):
         self.item_from_xml_item(item)
-        self.text = None
         self.stories = []
         for cf in item.iter('customfield'):
             if cf.attrib['key'] == 'com.pyxis.greenhopper.jira:gh-epic-label':
@@ -398,6 +395,7 @@ class Epic(Item):
 class Story(Item):
     def from_xml_item(self, item):
         self.item_from_xml_item(item)
+        self.type = item.find('type').text.replace(' ','')
         self.epickey = None     # Duplication here: "epickey" is the string, until such time as the epic is created
         self.epic = None
         for cf in item.iter('customfield'):

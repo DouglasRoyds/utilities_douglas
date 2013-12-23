@@ -219,7 +219,7 @@ class HtmlTable:
         rownum = 0
         for row in self.rows:
             content = contents[rownum] if rownum<len(contents) else None
-            row.add_column(column, item=content)
+            row.add_column(column, content)
             rownum += 1
 
     def append_to_column(self, column, story):
@@ -259,17 +259,17 @@ class HtmlTableRow:
     def width(self):
         return len(self.cells)
 
-    def add_column(self, column, text=None, item=None):
+    def add_column(self, column, item=None):
         if not column:
             column = self.width()
-        self.cells[column:column] = [HtmlTableCell(self, self.log, text=text, item=item)]
+        self.cells[column:column] = [HtmlTableCell(self, self.log, item=item)]
 
     def get_cell(self, column):
-        return self.cells[column].text or self.cells[column].item
+        return self.cells[column].item
 
-    def set_cell(self, column, story):
+    def set_cell(self, column, item):
         if not self.get_cell(column):
-            self.cells[column] = HtmlTableCell(self, self.log, item=story)
+            self.cells[column] = HtmlTableCell(self, self.log, item=item)
         else:
             raise Exception('Cell already set')
 
@@ -295,9 +295,9 @@ class HtmlTableSwimlane(HtmlTableRow):
             width = max(width, row.width())
         return width
 
-    def add_column(self, column, text=None, item=None):
+    def add_column(self, column, item=None):
         for row in self.rows:
-            row.add_column(column, text=text, item=item)
+            row.add_column(column, item=item)
 
     def set_cell(self, column, story):
         raise Exception("Can't set cells directly in swim-lanes")
@@ -314,9 +314,8 @@ class HtmlTableSwimlane(HtmlTableRow):
         self.rows.append(newrow)
 
 class HtmlTableCell:
-    def __init__(self, row, log, item=None, text=None):
+    def __init__(self, row, log, item=None):
         self.row = row
-        self.text = text
         self.item = item
 
     def __str__(self):
@@ -324,18 +323,14 @@ class HtmlTableCell:
 
     def string(self, colspan):
         return '<td' \
-                +(' class="'+self.row.htmlclass+'"' if self.text else '') \
                 +(' class="'+self.item.type+'"' if self.item else '') \
                 +(' colspan="{}"'.format(colspan) if colspan>1 else '') \
                 +'>' \
-                + (self.text if self.text else '') \
                 + (self.item.text if self.item else '') \
                 + '</td>'
 
     def get_text(self):
-        if self.text:
-            return self.text
-        elif self.item:
+        if self.item:
             return self.item.text
         else:
             return None

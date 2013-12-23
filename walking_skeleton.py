@@ -38,7 +38,7 @@ class WalkingSkeleton:
         other = Activity('Other', self.log)
         self.activities.append(other)
         issues_without_epics = Epic(self.log)
-        issues_without_epics.label = 'Stories without epics'
+        issues_without_epics.text = 'Stories without epics'
         other.add_epic(issues_without_epics)
         issues_without_epics.activity = other
         for story in self.stories_without_epics:
@@ -52,10 +52,10 @@ class WalkingSkeleton:
         return string.strip()
 
     def add_epic(self, epic):
-        activityname = epic.label.split()[0]
+        activityname = epic.text.split()[0]
         activity = None
         for activity in self.activities:
-            if activity.name == activityname:
+            if activity.text == activityname:
                 break
             activity = None
         if not activity:
@@ -108,18 +108,18 @@ class WalkingSkeleton:
                     epics_in_this_swimlane = []
             else:
                 epics_in_this_swimlane.append(new_epic)
-                self.log.debug('   Epic: {}'.format(new_epic.label))
+                self.log.debug('   Epic: {}'.format(new_epic.text))
 
             if new_epic not in epics_already_added:
                 column = len(epics_already_added)
                 for (i, epic) in list(enumerate(epics_already_added)):
                     if epic.activity == new_activity:
                         column = i+1   # Add after this column
-                table.add_column([new_activity.name, new_epic.label], column)
+                table.add_column([new_activity.text, new_epic.text], column)
                 epics_already_added[column:column] = [new_epic]
-            self.log.debug('      Story: {}'.format(story.summary))
+            self.log.debug('      Story: {}'.format(story.text))
             column = epics_already_added.index(new_epic)
-            table.append_to_column(column, story.summary)
+            table.append_to_column(column, story.text)
             previous_column = column
 
         self.log.debug('\n')
@@ -314,13 +314,13 @@ class HtmlTableCell:
 # ------------------------------------- Activities, Epics, Stories ----------------------------------------------------
 
 class Activity:
-    def __init__(self, name, log):
-        self.name = name
+    def __init__(self, text, log):
+        self.text = text
         self.log = log
         self.epics = []
 
     def __str__(self):
-        string = self.name+':'
+        string = self.text+':'
         for epic in self.epics:
             string += '\n'+epic.str_indent(4)
         return string
@@ -333,13 +333,13 @@ class Item:
         self.log = log
         self.key = None
         self.url = None
-        self.summary = None
+        self.text = None
 
     def item_from_xml_item(self, item):
         self.key = item.find('key').text
         self.url = item.find('link').text
-        self.summary = item.find('summary').text.encode(errors='replace')
-        #self.log.debug(self.key+': '+self.summary)
+        self.text = item.find('summary').text.encode(errors='replace')
+        #self.log.debug(self.key+': '+self.text)
         return self
 
     def __str__(self):
@@ -347,31 +347,47 @@ class Item:
     def str_indent(self, indent):
         if not self.key:
             raise Exception('Keyless items must override str_indent()')
-        return ' '*indent+self.key+': '+self.summary
+        return ' '*indent+self.key+': '+self.text
+
+class Activity(Item):
+    def __init__(self, text, log):
+        Item.__init__(self, log)
+        self.type = 'Activity'
+        self.text = text
+        self.epics = []
+
+    def __str__(self):
+        string = self.text+':'
+        for epic in self.epics:
+            string += '\n'+epic.str_indent(4)
+        return string
+
+    def add_epic(self, epic):
+        self.epics.append(epic)
 
 class Epic(Item):
     def __init__(self, log):
         Item.__init__(self, log)
-        self.label = ''
+        self.text = ''
         self.activity = None
         self.stories = []
 
     def from_xml_item(self, item):
         self.item_from_xml_item(item)
-        self.label = None
+        self.text = None
         self.stories = []
         for cf in item.iter('customfield'):
             if cf.attrib['key'] == 'com.pyxis.greenhopper.jira:gh-epic-label':
-                self.label = cf.find('customfieldvalues').find('customfieldvalue').text
+                self.text = cf.find('customfieldvalues').find('customfieldvalue').text
         return self
 
     def __str__(self):
         return self.str_indent(0)
     def str_indent(self, indent):
         if self.key:
-            string = ' '*indent+self.key+': '+self.label+' (Epic)'
+            string = ' '*indent+self.key+': '+self.text+' (Epic)'
         else:
-            string = ' '*indent+self.label
+            string = ' '*indent+self.text
         for story in self.stories:
             string += '\n'+story.str_indent(indent+4)
         return string

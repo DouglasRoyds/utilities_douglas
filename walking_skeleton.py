@@ -238,6 +238,7 @@ class HtmlTableRow:
         self.htmlclass = htmlclass
         self.log = log
         self.closed = closed
+        # This is a row of empty cells
         self.cells = [HtmlTableCell(self, self.log)] * columns
 
     def __str__(self):
@@ -257,10 +258,10 @@ class HtmlTableRow:
     def width(self):
         return len(self.cells)
 
-    def add_column(self, column, text=None):
+    def add_column(self, column, text=None, item=None):
         if not column:
             column = self.width()
-        self.cells[column:column] = [HtmlTableCell(self, self.log, text=text)]
+        self.cells[column:column] = [HtmlTableCell(self, self.log, text=text, item=item)]
 
     def get_cell(self, column):
         return self.cells[column].text
@@ -293,9 +294,9 @@ class HtmlTableSwimlane(HtmlTableRow):
             width = max(width, row.width())
         return width
 
-    def add_column(self, column, text=None):
+    def add_column(self, column, text=None, item=None):
         for row in self.rows:
-            row.add_column(column, text)
+            row.add_column(column, text=text, item=item)
 
     def set_cell(self, column, text):
         raise Exception("Can't set cells directly in swim-lanes")

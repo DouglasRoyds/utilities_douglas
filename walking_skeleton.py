@@ -154,19 +154,15 @@ class HtmlSkeletonDoc:
         }
         td.Capability {
             padding:4px;
-            background-color:#87CEFA;
+            background-color:#63FF42;
         }
         td.TechnicalDebt {
             padding:4px;
-            background-color:#87CEFA;
+            background-color:#FF5926;
         }
         td.Maintenance {
             padding:4px;
-            background-color:#87CEFA;
-        }
-        td.stories {
-            padding:4px;
-            background-color:#87CEFA;
+            background-color:#FF2222;
         }
         a#link {
             display: block;

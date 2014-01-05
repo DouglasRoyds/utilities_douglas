@@ -1,6 +1,7 @@
 #!/usr/bin/python
 """
 Parses an XML issue report exported from Jira, and generates an HTML walking skeleton view of it.
+Activity names are either the epic summary up to the first colon, or the first word of the epic summary if there is no colon.
 
 See:
 

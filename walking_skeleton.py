@@ -54,7 +54,9 @@ class WalkingSkeleton:
         return string.strip()
 
     def add_epic(self, epic):
-        activityname = epic.text.split()[0]
+        activityname = epic.text.split(':')[0]
+        if activityname == epic.text:
+            activityname = epic.text.split()[0]
         activity = None
         for activity in self.activities:
             if activity.text == activityname:

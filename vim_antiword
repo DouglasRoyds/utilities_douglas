@@ -1,0 +1,8 @@
+#!/bin/bash
+
+basename=$(basename "$1")
+tmpfile=$(mktemp "$basename.XXXXXX")
+
+antiword "$1" > "$tmpfile"
+gnome-terminal-vim "$tmpfile"
+

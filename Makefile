@@ -10,16 +10,7 @@ docdir = $(datarootdir)/doc/$(PACKAGE)
 pixmaps = $(datarootdir)/pixmaps/$(PACKAGE)
 DESTDIR = /
 
-executables = display_terminal_colours \
-	      generate_password \
-	      gnome-terminal-vim \
-	      i3 \
-	      i3status_append \
-	      hashcdrom \
-	      Man \
-	      pomodoro \
-	      pomodoro_remaining_time \
-	      rwhich vim_antiword
+executables = display_terminal_colours generate_password gnome-terminal-vim i3status_append hashcdrom Man pomodoro pomodoro_remaining_time rwhich vim_antiword
 imagefiles = pomodoro.png
 docfiles = $(wildcard *.md)
 

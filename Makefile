@@ -14,6 +14,7 @@ executables = display_terminal_colours \
 	      generate_password \
 	      gnome-terminal-vim \
 	      hashcdrom \
+	      i3-launch \
 	      i3status_append \
 	      Man \
 	      pomodoro \

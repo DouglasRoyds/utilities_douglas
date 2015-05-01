@@ -12,7 +12,7 @@ DESTDIR = /
 
 executables = display_terminal_colours \
 	      generate_password \
-	      gnome-terminal-vim \
+	      terminal-vim \
 	      hashcdrom \
 	      Man \
 	      pomodoro \

@@ -12,12 +12,13 @@ DESTDIR = /
 
 executables = display_terminal_colours \
 	      generate_password \
-	      terminal-vim \
 	      hashcdrom \
+              infoq_correct_album_and_artist \
 	      Man \
 	      pomodoro \
 	      pomodoro_remaining_time \
 	      rwhich \
+	      terminal-vim \
 	      vim_antiword
 imagefiles = pomodoro.png
 docfiles = $(wildcard *.md)

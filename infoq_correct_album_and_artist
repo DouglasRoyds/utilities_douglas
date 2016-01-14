@@ -5,12 +5,12 @@ if [ -d "$1" ]; then
    pwd
 fi
 
-for mp3 in infoq-*.mp3; do
+ls infoq-*.mp3 | while read mp3; do
    echo "mp3 = ${mp3}"
-   title=$(id3v2 -R $mp3 | gawk -F'- ' '/^TIT2/{print $2}')
-   author=$(id3v2 -R $mp3 | gawk -F'- ' '/^TPE1/{print $2}')
-   id3v2 -t"${author:+"$author -"} $title" -a"InfoQ" -A"InfoQ" $mp3
-   id3v2 -l $mp3 | grep Artist
+   title=$(id3v2 -R "$mp3" | gawk -F'- ' '/^TIT2/{print $2}')
+   author=$(id3v2 -R "$mp3" | gawk -F'- ' '/^TPE1/{print $2}')
+   id3v2 -t"${author:+"$author -"} $title" -a"InfoQ" -A"InfoQ" "$mp3"
+   id3v2 -l "$mp3" | grep Artist
    echo
 done
 

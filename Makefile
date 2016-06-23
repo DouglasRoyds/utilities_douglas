@@ -18,6 +18,7 @@ executables = display_terminal_colours \
 	      pomodoro \
 	      pomodoro_remaining_time \
 	      rwhich \
+	      solve \
 	      terminal-vim \
 	      vim_antiword
 imagefiles = pomodoro.png

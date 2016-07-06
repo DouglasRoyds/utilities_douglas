@@ -1,6 +1,5 @@
-#! /bin/bash
-# From Dave Taylor
-# http://www.linuxjournal.com/article/9891
+#!/bin/bash
+# From Dave Taylor: http://www.linuxjournal.com/article/9891
 
 bc << __EOF__
 scale=4

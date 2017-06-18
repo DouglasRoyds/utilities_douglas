@@ -1,11 +1,11 @@
-#!/bin/bash
+#!/bin/sh
 
 candidate=$(which $1)
 while [ -L "$candidate" ]; do
    ls -lh --color $candidate
    path=$(dirname $candidate)
    candidate=$(readlink $candidate)
-   if [ "$(basename $candidate)" == "$candidate" ]
+   if [ "$(basename $candidate)" = "$candidate" ]
       then candidate="$path/$candidate"
    fi
 done

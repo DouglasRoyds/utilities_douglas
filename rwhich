@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 candidate=$(which $1)
 while [ -L "$candidate" ]; do
    ls -lh --color $candidate

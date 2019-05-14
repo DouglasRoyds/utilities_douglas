@@ -1,3 +1,0 @@
-#!/bin/bash
-man "$@" >/dev/null && \
-   vim "+set nospell" "+set tabstop=8" "+Man $@" "+only"

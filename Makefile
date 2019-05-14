@@ -13,8 +13,7 @@ DESTDIR = /
 executables = display_terminal_colours \
 	      generate_password \
 	      hashcdrom \
-              infoq_correct_album_and_artist \
-	      Man \
+	      infoq_correct_album_and_artist \
 	      pomodoro \
 	      pomodoro_remaining_time \
 	      rwhich \

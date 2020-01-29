@@ -1,8 +1,8 @@
 #!/bin/bash
 # From Dave Taylor: http://www.linuxjournal.com/article/9891
 
-bc << __EOF__
-scale=2
+bc -l << __EOF__
+scale=4
 $@
 quit
 __EOF__

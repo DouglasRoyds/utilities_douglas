@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -e
+
+cleanup() {
+   test -n "$tmpfile" && rm "$tmpfile"
+}
+trap cleanup EXIT
+
+basename=$(basename "$1")
+tmpfile=$(mktemp -t "$basename.XXXXXX")
+
+docx2txt "$1" "$tmpfile"
+terminal-vim "$tmpfile"
+

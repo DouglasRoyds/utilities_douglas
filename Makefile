@@ -12,6 +12,7 @@ DESTDIR = /
 
 executables = display_terminal_colours \
 	      generate_password \
+	      gnome-screenlock-action \
 	      hashcdrom \
 	      infoq_correct_album_and_artist \
 	      pomodoro \

@@ -1,0 +1,29 @@
+#!/bin/bash
+# Run a script on screen lock/unlock under Gnome 3.
+# Add scripts (or symlinks) to
+#
+#     ~/.local/share/gnome-screenlock-action/
+#     ├── lock
+#     └── unlock
+#
+# See https://askubuntu.com/questions/974199/how-to-run-a-script-at-screen-lock-unlocks-in-ubuntu-17-10
+
+scriptdir=$HOME/.local/share/gnome-screenlock-action
+
+run_scripts() {
+   lock=$1
+   for script in $scriptdir/$lock/*; do
+      logger "gnome-screenlock-action: $lock: $script"
+      $script >/dev/null 2>&1
+   done
+}
+
+gdbus monitor -y -d org.freedesktop.login1 |
+   grep --line-buffered LockedHint |
+   while read; do
+      if echo $REPLY | grep -q "<true>"; then
+         run_scripts "lock"
+      elif echo $REPLY | grep -q "<false>"; then
+         run_scripts "unlock"
+      fi
+   done

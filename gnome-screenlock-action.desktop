@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=gnome-screenlock-action
+GenericName=Gnome Screenlock Action
+Comment=Launch scripts or programs on screen lock or unlock
+Exec=/usr/local/bin/gnome-screenlock-action
+Terminal=false
+Type=Application
+X-GNOME-Autostart-enabled=true

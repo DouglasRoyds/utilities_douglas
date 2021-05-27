@@ -16,6 +16,7 @@ executables = display_terminal_colours \
 	      hashcdrom \
 	      infoq_correct_album_and_artist \
 	      notify-send-failure \
+	      notify-send-result \
 	      notify-send-success \
 	      pomodoro \
 	      pomodoro_remaining_time \

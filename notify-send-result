@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+"$@" && notify-send --icon /usr/share/icons/Yaru/32x32/emblems/emblem-default.png "Success" \
+     || notify-send --icon /usr/share/icons/Yaru/32x32/emblems/emblem-danger.png  "Failed"

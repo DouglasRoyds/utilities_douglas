@@ -15,6 +15,8 @@ executables = display_terminal_colours \
 	      gnome-screenlock-action \
 	      hashcdrom \
 	      infoq_correct_album_and_artist \
+	      notify-send-failure \
+	      notify-send-success \
 	      pomodoro \
 	      pomodoro_remaining_time \
 	      rwhich \

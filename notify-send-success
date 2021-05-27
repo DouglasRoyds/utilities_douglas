@@ -1,0 +1,4 @@
+#!/bin/sh -e
+
+message="${@:-Success}"
+notify-send --icon /usr/share/icons/Yaru/32x32/emblems/emblem-default.png "$message"

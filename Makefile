@@ -15,6 +15,7 @@ executables = display_terminal_colours \
 	      gnome-screenlock-action \
 	      hashcdrom \
 	      infoq_correct_album_and_artist \
+	      not \
 	      notify-send-failure \
 	      notify-send-result \
 	      notify-send-success \

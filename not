@@ -1,0 +1,4 @@
+#!/bin/sh
+# Reverse the sense of an exit code
+
+! "$@"

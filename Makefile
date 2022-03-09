@@ -24,7 +24,8 @@ executables = display_terminal_colours \
 	      rwhich \
 	      solve \
 	      terminal-vim \
-	      vim_antiword
+	      vim_antiword \
+	      zoom-update
 imagefiles = pomodoro.png
 docfiles = $(wildcard *.md)
 

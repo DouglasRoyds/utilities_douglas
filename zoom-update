@@ -1,0 +1,12 @@
+#!/bin/sh -e
+
+download=$(xdg-user-dir DOWNLOAD)
+
+echo "Downloading zoom_amd64.deb"
+wget -nv -O $download/zoom_amd64.deb 'https://zoom.us/client/latest/zoom_amd64.deb' # &> /dev/null
+ls -lh $download/zoom_amd64.deb
+
+echo "Installing"
+sudo dpkg --install --skip-same-version $download/zoom_amd64.deb
+
+rm -f $download/zoom_amd64.deb

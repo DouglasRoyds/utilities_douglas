@@ -12,3 +12,5 @@ done
 
 ls -lh --color $candidate
 file $candidate
+dpkg -S $candidate || true
+

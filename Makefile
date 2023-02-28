@@ -19,6 +19,7 @@ executables = display_terminal_colours \
 	      notify-send-failure \
 	      notify-send-result \
 	      notify-send-success \
+	      path \
 	      pomodoro \
 	      pomodoro_remaining_time \
 	      rwhich \

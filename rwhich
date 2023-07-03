@@ -12,5 +12,5 @@ done
 
 ls -lh --color $candidate
 file $candidate
-dpkg -S $candidate || true
+installed_package=$(dpkg -S $candidate 2>/dev/null) && echo $installed_package
 

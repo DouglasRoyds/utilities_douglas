@@ -8,6 +8,8 @@ bindir = $(exec_prefix)/bin
 datarootdir = $(prefix)/share
 docdir = $(datarootdir)/doc/$(PACKAGE)
 pixmaps = $(datarootdir)/pixmaps/$(PACKAGE)
+sysconfdir = /etc
+completiondir = $(sysconfdir)/bash_completion.d
 DESTDIR = /
 
 executables = display_terminal_colours \
@@ -27,6 +29,7 @@ executables = display_terminal_colours \
 	      terminal-vim \
 	      vim_antiword \
 	      zoom-update
+completionfiles = rwhich_completion
 imagefiles = pomodoro.png
 docfiles = $(wildcard *.md)
 
@@ -42,9 +45,11 @@ help:
 
 install:
 	@install -d $(DESTDIR)$(bindir)
+	@install -d $(DESTDIR)$(completiondir)
 	@install -d $(DESTDIR)$(docdir)
 	@install -d $(DESTDIR)$(pixmaps)
 	@install -v -m775 $(executables)     $(DESTDIR)$(bindir)
+	@install -v -m664 $(completionfiles) $(DESTDIR)$(completiondir)
 	@install -v -m664 $(docfiles)        $(DESTDIR)$(docdir)
 	@install -v -m664 $(imagefiles)      $(DESTDIR)$(pixmaps)
 

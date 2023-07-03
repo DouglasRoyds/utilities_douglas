@@ -32,7 +32,7 @@ docfiles = $(wildcard *.md)
 
 help:
 	@echo "An install-only makefile to allow easy running of checkinstall:"
-	@echo "   $$ sudo make checkinstall"
+	@echo "   $$ make checkinstall"
 	@echo
 	@echo "Installs the following executables:"
 	@echo -n "   "; echo $(executables) | sed 's# \+#\n   #g'
@@ -49,5 +49,5 @@ install:
 	@install -v -m664 $(imagefiles) $(DESTDIR)$(pixmaps)
 
 checkinstall:
-	checkinstall --pkgname=$(PACKAGE) --nodoc
+	sudo checkinstall --pkgname=$(PACKAGE) --nodoc
 

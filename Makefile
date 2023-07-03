@@ -44,9 +44,9 @@ install:
 	@install -d $(DESTDIR)$(bindir)
 	@install -d $(DESTDIR)$(docdir)
 	@install -d $(DESTDIR)$(pixmaps)
-	@install -v -m775 $(executables) $(DESTDIR)$(bindir)
-	@install -v -m664 $(docfiles) $(DESTDIR)$(docdir)
-	@install -v -m664 $(imagefiles) $(DESTDIR)$(pixmaps)
+	@install -v -m775 $(executables)     $(DESTDIR)$(bindir)
+	@install -v -m664 $(docfiles)        $(DESTDIR)$(docdir)
+	@install -v -m664 $(imagefiles)      $(DESTDIR)$(pixmaps)
 
 checkinstall:
 	sudo checkinstall --pkgname=$(PACKAGE) --nodoc

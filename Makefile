@@ -17,6 +17,7 @@ executables = display_terminal_colours \
 	      gnome-screenlock-action \
 	      hashcdrom \
 	      infoq_correct_album_and_artist \
+              make-me-a-sandwich \
 	      not \
 	      notify-send-failure \
 	      notify-send-result \
